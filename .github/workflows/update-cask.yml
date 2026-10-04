@@ -1,0 +1,56 @@
+name: update-cask
+
+on:
+  repository_dispatch:
+    types: [homebrew-update]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine latest desktop release
+        run: |
+          set -euo pipefail
+          tag="$(gh release view --repo wgtunnel/desktop --json tagName -q .tagName)"
+          version="${tag#v}"
+          echo "Updating cask to $version (tag: $tag)"
+          echo "TAG=$tag" >> "$GITHUB_ENV"
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Download DMG and compute checksum
+        run: |
+          set -euo pipefail
+          url="https://github.com/wgtunnel/desktop/releases/download/${TAG}/wgtunnel-${VERSION}-mac-arm64.dmg"
+          curl -fsSL -o wgtunnel.dmg "$url"
+          sha256="$(sha256sum wgtunnel.dmg | cut -d' ' -f1)"
+          echo "SHA256=$sha256" >> "$GITHUB_ENV"
+
+      - name: Update cask
+        run: |
+          set -euo pipefail
+          current_version="$(grep -oP '(?<=version ")[^"]+' Casks/wgtunnel.rb)"
+          if [ "$current_version" = "$VERSION" ]; then
+            echo "Cask already at $VERSION, nothing to do"
+            exit 0
+          fi
+          sed -i "s/version \"[^\"]*\"/version \"${VERSION}\"/" Casks/wgtunnel.rb
+          sed -i "s/sha256 \"[^\"]*\"/sha256 \"${SHA256}\"/" Casks/wgtunnel.rb
+          echo "UPDATED=1" >> "$GITHUB_ENV"
+
+      - name: Commit and push
+        if: env.UPDATED == '1'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/wgtunnel.rb
+          git commit -m "wgtunnel ${VERSION}"
+          git push origin HEAD
