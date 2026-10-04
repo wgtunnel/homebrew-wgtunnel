@@ -1,4 +1,4 @@
-cask "wgtunnel" do
+cask "wg-tunnel" do
   version "2.3.0"
   sha256 "318fed987c93a085a9569d5245a5d6cb9ca067ec0b6061f73d0fd5ede17a5599"
 
@@ -12,7 +12,7 @@ cask "wgtunnel" do
     strategy :github_latest
   end
 
-  depends_on macos: ">= :ventura"
+  depends_on macos: :ventura
   depends_on arch: :arm64
 
   app "WG Tunnel.app"
@@ -32,7 +32,7 @@ cask "wgtunnel" do
     Items & Extensions.
 
     Before uninstalling, use Settings -> General -> Remove background service in the app
-    itself, then run `brew uninstall --zap wgtunnel`. Skipping that step leaves the daemon
+    itself, then run `brew uninstall --zap wg-tunnel`. Skipping that step leaves the daemon
     running until you reboot (macOS has no hook that automatically uninstalls the daemon when 
     the app bundle is removed).
   EOS

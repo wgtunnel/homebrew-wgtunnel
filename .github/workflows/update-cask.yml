@@ -36,13 +36,13 @@ jobs:
       - name: Update cask
         run: |
           set -euo pipefail
-          current_version="$(grep -oP '(?<=version ")[^"]+' Casks/wgtunnel.rb)"
+          current_version="$(grep -oP '(?<=version ")[^"]+' Casks/wg-tunnel.rb)"
           if [ "$current_version" = "$VERSION" ]; then
             echo "Cask already at $VERSION, nothing to do"
             exit 0
           fi
-          sed -i "s/version \"[^\"]*\"/version \"${VERSION}\"/" Casks/wgtunnel.rb
-          sed -i "s/sha256 \"[^\"]*\"/sha256 \"${SHA256}\"/" Casks/wgtunnel.rb
+          sed -i "s/version \"[^\"]*\"/version \"${VERSION}\"/" Casks/wg-tunnel.rb
+          sed -i "s/sha256 \"[^\"]*\"/sha256 \"${SHA256}\"/" Casks/wg-tunnel.rb
           echo "UPDATED=1" >> "$GITHUB_ENV"
 
       - name: Commit and push
@@ -51,6 +51,6 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Casks/wgtunnel.rb
-          git commit -m "wgtunnel ${VERSION}"
+          git add Casks/wg-tunnel.rb
+          git commit -m "wg-tunnel ${VERSION}"
           git push origin HEAD

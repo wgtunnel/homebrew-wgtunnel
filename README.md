@@ -8,7 +8,7 @@ WireGuard and AmneziaWG.
 ```bash
 brew tap wgtunnel/wgtunnel
 brew trust wgtunnel/wgtunnel
-brew install --cask wgtunnel
+brew install --cask wg-tunnel
 ```
 
 ## Update
@@ -22,7 +22,7 @@ Before uninstalling, use **Settings -> General -> Remove background service** in
 itself, then:
 
 ```bash
-brew uninstall --zap wgtunnel
+brew uninstall --zap wg-tunnel
 ```
 
 Skipping the in-app step first leaves the background service (a LaunchDaemon) running until
