@@ -7,6 +7,7 @@ WireGuard and AmneziaWG.
 
 ```bash
 brew tap wgtunnel/wgtunnel
+brew trust wgtunnel/wgtunnel
 brew install --cask wgtunnel
 ```
 
