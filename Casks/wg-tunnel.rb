@@ -1,6 +1,6 @@
 cask "wg-tunnel" do
-  version "2.5.0"
-  sha256 "943b20a17ea6e673aa7b17fc25affee366db999a569c2cd2c1fdb991643ea970"
+  version "2.5.1"
+  sha256 "09e0afce562862d64ff9a272059e20b9fc05cb5310ebe1d0b22a6c774f7ae0d9"
 
   url "https://github.com/wgtunnel/desktop/releases/download/v#{version}/wgtunnel-#{version}-mac-arm64.dmg"
   name "WG Tunnel"
